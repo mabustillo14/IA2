@@ -1,6 +1,7 @@
 from A_estrella import astar, MostrarMapa, DeterminarCoordenadas
 import Laberinto as Lab
 import itertools
+from PIL import Image
 
 def solucion(A,B):
     # Cast: Conversión string a int
@@ -92,44 +93,71 @@ def Graficar(optima_ruta,ordenes):
     # Mostrar el Mapa con la solucion
     MostrarMapa('mapa_temple.png','Mapa Temple', maze)
 
+    # Output para interfaz gráfica
+    imagen_output = Image.open('mapa_temple.png')
+
+    return imagen_output
 
 
+def Temple(ordenes):
 
-A=5
-B=25
-C=33
-D = 15
+    # Separamos por un espacio
+    ordenes = ordenes.split(",")
+    
+    cant_Filas, cant_columnas,espaciado_alto, alto, espaciado_ancho, ancho = Lab.ExtraccionDatos()
 
-ordenes=[A, B, C, D]
-# Hacemos una lista con las permutaciones
-permutaciones = list(itertools.permutations(ordenes))
-#print(permutaciones)
+    # Obtener caracteristicas del Laberinto
+    cant_estantes = alto*ancho*cant_columnas*cant_Filas
 
-permutacion_it = list(permutaciones[0])
-optima_ruta = Secuencia(permutacion_it)
-optima_permutacion= permutacion_it
-costo_optimo = sum(len(v) for v in optima_ruta)
+    # Convertimos a int cada cadena de texto
+    for i in range(len(ordenes)):
+        ordenes[i] = int(ordenes[i])
+        if(ordenes[i]<0 or ordenes[i]>cant_estantes): # Verificamos que exista ese estante
+            return "Error - No se ha encontrado la ruta para uno de los estantes", "Error - Verifique que exista todos los estantes", None, None
+    
+    # Hacemos una lista con las permutaciones
+    permutaciones = list(itertools.permutations(ordenes))
+    #print(permutaciones)
 
-# Obtenemos la ruta con cada una de las permutaciones
-for i in range(len(permutaciones)):
-    #Cada elemento es una tupla, asi que las convertimos a lista
-    permutacion_it = list(permutaciones[i])
-    ruta_it = Secuencia(permutacion_it)
+    permutacion_it = list(permutaciones[0])
+    optima_ruta = Secuencia(permutacion_it)
+    optima_permutacion= permutacion_it
+    costo_optimo = sum(len(v) for v in optima_ruta)
 
-    costo_it = sum(len(v) for v in ruta_it)
+    # Obtenemos la ruta con cada una de las permutaciones
+    for i in range(len(permutaciones)):
+        #Cada elemento es una tupla, asi que las convertimos a lista
+        permutacion_it = list(permutaciones[i])
+        ruta_it = Secuencia(permutacion_it)
 
-    if(costo_it < costo_optimo):
-        optima_ruta =  ruta_it
-        optima_permutacion = permutacion_it
-        costo_optimo = costo_it
+        costo_it = sum(len(v) for v in ruta_it)
 
-    print("Calculando ruta optima " + str(i+1) + " de " + str(len(permutaciones)) + " con costo " + str(costo_it))
+        if(costo_it < costo_optimo):
+            optima_ruta =  ruta_it
+            optima_permutacion = permutacion_it
+            costo_optimo = costo_it
 
-# Resultados
+        print("Calculando ruta optima " + str(i+1) + " de " + str(len(permutaciones)) + " con costo " + str(costo_it))
 
-print("\nCosto total optimo: ", costo_optimo)
-print("Permutacion optima", optima_permutacion)
-print("Ruta optima")
-print(optima_ruta)
-Graficar(optima_ruta,ordenes)
+    return costo_optimo, optima_permutacion, optima_ruta, Graficar(optima_ruta,ordenes)
+    
+
+
+if __name__ == '__main__': #Para que se pueda usar sin interfaz grafica
+    print("----------------TEMPLE SIMULADO----------------")
+    print("Ingrese la secuencia de pedidos separado por una coma")
+    texto = input("Ordenes: ")
+
+
+    costo_optimo, optima_permutacion, optima_ruta, salida = Temple(texto)
+
+    # Resultados
+    print("\n-----------------------")
+    print("RESULTADOS:")
+    print("\nCosto total óptimo: ", costo_optimo)
+    print("Ruta óptima:", optima_permutacion)
+    print("Secuencia de pasos óptima")
+    print(optima_ruta)
+
+
 
