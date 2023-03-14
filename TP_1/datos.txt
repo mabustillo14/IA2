@@ -1,0 +1,2 @@
+cant_Filas, cant_columnas, espaciado_alto, alto, espaciado_ancho, ancho,
+3,3,2,4,2,2,
