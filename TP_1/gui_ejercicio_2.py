@@ -33,8 +33,8 @@ enable_queue=False
 text1 = gr.Textbox(label="Mesa Inicial") # Ordenes
 
 # Salida de datos
-text2 = gr.Textbox(label="Costo del camino óptimo")
-text3 = gr.Textbox(label="Secuencia de pedidos óptima")
+text2 = gr.Textbox(label="Costo del picking óptimo")
+text3 = gr.Textbox(label="Secuencia de picking óptima")
 text4 = gr.Textbox(label="Ruta Solución óptima")
 image1 = gr.Image(shape=(140, 140), label="Mapa Solución")
 

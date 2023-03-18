@@ -245,7 +245,8 @@ def DeterminarCoordenadas(Mesa):
     for i in range(cant_columnas): # La numeración se completa primero en filas y despues las columnas
         for j in range(cant_Filas):
             cont +=1
-            grupos[i][j] = cont
+            #grupos[i][j] = cont
+            grupos[j][i] = cont
             if (cont == grupo) :
                 x_grupo = j
                 y_grupo = i
