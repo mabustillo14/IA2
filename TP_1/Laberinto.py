@@ -16,6 +16,8 @@ def ExtraccionDatos():
 
         return cant_Filas, cant_columnas,espaciado_alto, alto, espaciado_ancho, ancho 
 
+
+
 def Mapa():
     # Definir el mapa del problema
     # Los 0 es por donde se puede pasar y los 1 por donde no se puede cruzar

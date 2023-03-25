@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
 import Laberinto as Lab
-from PIL import Image
 import math
 
 class nodoo(): #A cada punto del mapa le calcula los valores de g, h y f
@@ -62,9 +60,7 @@ def astar(maze, start, end):
         for index, item in enumerate(lista_abierta):
             if item.f < nodo_Actual.f: # Buscar la celda de menor F
                 nodo_Actual = item
-                current_index = index
-        
-        
+                current_index = index        
 
         # ELiminar la celda actual de la lista abierta, agregar a la lista cerrada
         lista_abierta.pop(current_index)
@@ -100,7 +96,6 @@ def astar(maze, start, end):
             # Si pasa todas las pruebas, agregar el nuevo nodo
             children.append(nuevo_node)
         
-
         # Para cada elemento de la lista children se verifica si ya se analizo antes
         for nodo_children in children:
 
@@ -127,92 +122,8 @@ def astar(maze, start, end):
             lista_abierta.append(nodo_children)
     
 
-
-def MostrarMapa(NombreMapa, titulo, maze):
-    # Generar Figura
-    plt.matshow(maze)
-    # Agregar nombre a los ejes
-    # Los ejes estan invertidos
-    plt.xlabel("Coordenada Y", size = 16,)
-    plt.ylabel("Coordenada X", size = 16)
-    
-    # Agregar el titulo
-    plt.title(
-        titulo, 
-        fontdict={'color':'black', 'size':16},
-        loc='center')
-    #plt.grid(color='b', linestyle='-', linewidth=0.5)
-    # Guardar figura
-    plt.savefig(NombreMapa)   
-
-
-
-def solucion(A,B):
-    ESolucion = True
-
-    # Cast: Conversión string a int
-    A, B = int(A), int(B)
-
-    Ax, Ay = DeterminarCoordenadas(A)
-    Bx, By = DeterminarCoordenadas(B)
-    
-    # Verificar que el estante exista
-    if(Ax==None):
-        return "Ingrese un estante A válido", None
-    elif(Bx==None):
-        return "Ingrese un estante B válido", None
-
-    # Obtener el Mapa
-    maze = Lab.Mapa()
-    
-    # Establecer los puntos de comienzo y fin
-    # El programa lee las coordenadas como (x,y)
-    PuntoStart = (Ax, Ay) # 0,0
-    PuntoEnd = (Bx, By) #7,7
-    
-
-    print('\nLa trayectoria solución que se debe seguir es:')
-    # Pasamos los parametros del mapa, el punto A y B y devuelve el string solucion
-    path = astar(maze, PuntoStart, PuntoEnd) 
-    if(path[1]!="Sin Solucion"):
-        print(path)
-    else:
-        ESolucion = False
-        path.pop(1)
-
-    # Agregar al Mapa la secuencia de la solucion
-    lista = []
-    for i in range(len(path)): # El sistema de referencia esta invertido
-        num1 = path[i][0] # Coordenada Y
-        num2 = path[i][1] # Coordenada X
-
-        # Pasamos las coordenadas a graficar como (y,x)
-        # Los ejes estan invertidos
-        lista.append(num1)
-        lista.append(num2)
-
-    # Colorear los puntos solucion
-    for i in range(0,len(lista),2):
-        maze[lista[i]][lista[i+1]] = 5 
-    # Puntos A y B de distinto Color
-    maze[lista[0]][lista[1]] = 7 
-    maze[lista[len(lista)-2]][lista[len(lista)-1]] = 7 
-    # Mostrar el Mapa con la solucion
-    MostrarMapa('mapa_solucion.png','Mapa Solución', maze)
-
-    # Output para interfaz gráfica
-    imagen_output = Image.open('mapa_solucion.png')
-
-    if ESolucion ==  False:
-        path = ["No hay solucion"]
-        print(path)
-
-    return path, imagen_output
-    
-
-
-
-def DeterminarCoordenadas(Mesa):
+"""
+def DeterminarCoordenadas(Mesa): # Determinar coordenadas de cualquier mesa existente
     cant_Filas, cant_columnas,espaciado_alto, alto, espaciado_ancho, ancho = Lab.ExtraccionDatos()
 
     cant_estantes = cant_Filas*cant_columnas*alto*ancho
@@ -296,33 +207,6 @@ def DeterminarCoordenadas(Mesa):
     #print("final", x_final,y_final)
 
     return x_final,y_final
+"""
 
 
-if __name__ == '__main__': #Para que se pueda usar sin interfaz grafica
-    cant_Filas, cant_columnas,espaciado_alto, alto, espaciado_ancho, ancho = Lab.ExtraccionDatos()
-    
-    print('--------------------Método A*--------------------')
-    print("Ingrese el estante correspondiente a cada tramo del recorrido")
-
-    # Determinar en que agrupacion esta la posicion inicial
-    aux = alto*ancho*cant_columnas*cant_Filas
-    fin = True # Determinar si existe un estante
-    while(fin):
-        A = int(input ('Estante Inicial: '))
-
-        if(0<=A<=aux):
-            fin = False
-        else:
-            print("Error - Ingrese un estante válido")
-
-    fin = True # Determinar si existe un estante
-    while(fin):
-        B = int(input ('Estante Objetivo: '))
-        if(0<=B<=aux):
-            fin = False
-        else:
-            print("Error - Ingrese un estante válido")
-
-
-
-    solucion (A, B)

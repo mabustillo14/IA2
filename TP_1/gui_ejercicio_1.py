@@ -4,8 +4,9 @@ Hacemos uso de Gradio: pip3 install gradio
 """
 
 import gradio as gr
-from A_estrella import solucion, MostrarMapa, DeterminarCoordenadas
+from A_estrella import gui
 import Laberinto as Lab
+from funciones import MostrarMapa
 
 
 cant_Filas, cant_columnas,espaciado_alto, alto, espaciado_ancho, ancho = Lab.ExtraccionDatos()
@@ -15,7 +16,7 @@ maze = Lab.Mapa()
 cant_estantes = alto*ancho*cant_columnas*cant_Filas
 
 # Mostar el Mapa por pantalla
-MostrarMapa('mapa.png','Mapa', maze)
+MostrarMapa('mapa','Mapa', maze)
 
 # Descripción del Header
 title = "Resolución de Laberinto 🗺️"
@@ -41,7 +42,7 @@ examples = [[23,43]]
 
 # Planteamiento de la Interfaz
 demo = gr.Interface(
-    fn=solucion, 
+    fn=gui, 
     inputs=[text1, text2], 
     outputs=[text5,image1],
     title=title,

@@ -4,8 +4,8 @@ Hacemos uso de Gradio: pip3 install gradio
 """
 
 import gradio as gr
-from A_estrella import solucion, MostrarMapa, DeterminarCoordenadas
-from temple import Temple
+from funciones import MostrarMapa
+from temple import gui
 import Laberinto as Lab
 
 
@@ -20,7 +20,7 @@ MostrarMapa('mapa.png','Mapa', maze)
 
 # Descripción del Header
 title = "Resolución de Lista de Pedidos 🗺️"
-description = '**Input:** Lista de orden de pedidos, separado cada pedido por una coma.<br>' 
+description = '**Input:** Lista de orden de pedidos, Coordenadas de Picking y Packing. Separado por una coma cada una.<br>' 
 description += '**Output:** Secuencia óptima, Path óptimo , Mapa con la solución <br>'
 description += '**Características:** El Laberinto tiene '  + str(cant_estantes) +' estantes disponibles'
 
@@ -30,12 +30,14 @@ article += '**Mario Bustillo 2023 🚀** | [Github](https://github.com/mabustill
 enable_queue=False
 
 # Entrada de datos
-text1 = gr.Textbox(label="Mesa Inicial") # Ordenes
+ordenes = gr.Textbox(label="Lista de Estantes") # Ordenes
+picking = gr.Textbox(label="Coordenadas de Picking: x,y") # Coordenadas de Picking
+packing = gr.Textbox(label="Coordenadas de Packing: x,y") # Coordenadas de Packing
 
 # Salida de datos
-text2 = gr.Textbox(label="Costo del picking óptimo")
-text3 = gr.Textbox(label="Secuencia de picking óptima")
-text4 = gr.Textbox(label="Ruta Solución óptima")
+text4 = gr.Textbox(label="Costo de la ruta óptima")
+text5 = gr.Textbox(label="Secuencia de picking óptima")
+text6 = gr.Textbox(label="Ruta Solución óptima")
 image1 = gr.Image(shape=(140, 140), label="Mapa Solución")
 
 # Ejemplos
@@ -43,9 +45,9 @@ examples = [["5, 25, 33,15"]]
 
 # Planteamiento de la Interfaz
 demo = gr.Interface(
-    fn=Temple, 
-    inputs=[text1], 
-    outputs=[text2,text3,text4,image1],
+    fn=gui, 
+    inputs=[ordenes, picking,packing], 
+    outputs=[text4,text5,text6,image1],
     title=title,
     description=description,
     article=article, 
