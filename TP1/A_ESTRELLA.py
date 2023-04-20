@@ -187,14 +187,16 @@ def Algoritmo(Mapa, Inicio, Meta, MostrarData=False): #algoritmo A estrella
           meta=1
       if meta ==1:
         Camino=[]
-        if(MostrarData):
-          print("\nMETA ALCANZADA")
-          print("CAMINO MÁS CORTO:")
+        
         while NodoActual is not None:
           Camino.append((NodoActual.fila,NodoActual.columna))
           NodoActual=NodoActual.padre
         Camino=list(reversed(Camino))
         Camino.append((Meta[0],Meta[1]))
+        if(MostrarData):
+          print("\nMETA ALCANZADA")
+          print("CAMINO MÁS CORTO:")
+          print(Camino)
         
         costo_=len(Camino)
         break
@@ -262,10 +264,10 @@ def GUI(InicioX, InicioY, MetaX, MetaY):
   Mapa = def_Mapa()
   cantFilas, cantColumnas = len(Mapa), len(Mapa[0])
 
-  if(Inicio[0]>cantFilas or Inicio[1]<cantColumnas):
+  if(Inicio[0]>cantFilas or         Inicio[1]>cantColumnas):
     return "Error - Coordenada Inicial fuera del Laberinto", None, None
 
-  if(Meta[0]>cantFilas or Meta[1]<cantColumnas):
+  if(Meta[0]>cantFilas or Meta[1]>cantColumnas):
     return "Error - Coordenada Objetivo fuera del Laberinto", None, None
   
   costo, camino = Algoritmo(Mapa, Inicio, Meta, True)
